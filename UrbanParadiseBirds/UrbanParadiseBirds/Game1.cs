@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System.Collections.Generic;
 using System.Linq;
 using System;
@@ -16,10 +17,15 @@ namespace UrbanParadiseBirds
         private InputHelper inputHelper;
         private GraphicsHelper graphicsHelper;
         private LandingPosition[] lpos;
+        private PhotoIcon[] icons;
         public static ContentManager contentManager;
         public static Random rand;
         public static int lastScore;
         public static int highScore;
+        public static List<Photo> photos;
+        Song ambience;
+        int maxPhotos = 5, photosTaken;
+        
 
         public Game1()
         {
@@ -29,18 +35,20 @@ namespace UrbanParadiseBirds
             inputHelper = new InputHelper();
             IsMouseVisible = true;
             rand = new Random();
+            photos = new List<Photo>();
+            icons = new PhotoIcon[maxPhotos];
         }
-        
+
         protected override void Initialize()
         {
             lpos = new LandingPosition[5];
             lpos[0] = new LandingPosition(new Vector2(50, 132));
             Objects.List.Add(lpos[0]);
 
-            lpos[1] = new LandingPosition(new Vector2(60, 62));
+            lpos[1] = new LandingPosition(new Vector2(70, 62));
             Objects.List.Add(lpos[1]);
 
-            lpos[2] = new LandingPosition(new Vector2(115, 45));
+            lpos[2] = new LandingPosition(new Vector2(135, 45));
             Objects.List.Add(lpos[2]);
 
             lpos[3] = new LandingPosition(new Vector2(150, 11));
@@ -49,12 +57,35 @@ namespace UrbanParadiseBirds
             lpos[4] = new LandingPosition(new Vector2(170, 132));
             Objects.List.Add(lpos[4]);
 
+            SpawnPigeon();
+
+            ambience = contentManager.Load<Song>("ambience");
+            MediaPlayer.Play(ambience);
+            MediaPlayer.IsRepeating = true;
+
+            for (int z = 0; z < maxPhotos; z++)
+            {
+                icons[z] = new PhotoIcon(new Vector2(z * 22 + 2, 200-27));
+                Objects.List.Add(icons[z]);
+            }
+
             base.Initialize();
         }
-        
+
         protected override void LoadContent()
         {
 
+        }
+
+        void SpawnPigeon()
+        {
+            int index = rand.Next(lpos.Length);
+            LandingPosition landing = lpos[index];
+            if (!landing.occupied)
+            {
+                Pigeon pigeon = new Pigeon(landing);
+                Objects.List.Add(pigeon);
+            }
         }
         
         protected override void Update(GameTime gameTime)
@@ -68,13 +99,7 @@ namespace UrbanParadiseBirds
 
             if(rand.Next(600) == 1) //spawn pigeon
             {
-                int index = rand.Next(lpos.Length);
-                LandingPosition landing = lpos[index];
-                if (!landing.occupied)
-                {
-                    Pigeon pigeon = new Pigeon(landing);
-                    Objects.List.Add(pigeon);
-                }
+                SpawnPigeon();
             }
 
             base.Update(gameTime);
@@ -84,6 +109,12 @@ namespace UrbanParadiseBirds
                 obj.HandleInput(inputHelper);
             foreach (GameObject obj in Objects.List)
                 obj.Update(gameTime);
+            foreach (GameObject obj in Objects.AddList)
+                Objects.List.Add(obj);
+            Objects.AddList.Clear();
+            foreach (GameObject obj in Objects.RemoveList)
+                Objects.List.Remove(obj);
+            Objects.RemoveList.Clear();
 
             List<Pigeon> removeList = new List<Pigeon>();
             foreach (Pigeon pigeon in Objects.List.OfType<Pigeon>())
@@ -96,16 +127,23 @@ namespace UrbanParadiseBirds
 
             if (inputHelper.KeyPressed(Keys.Space))
             {
-                lastScore = 0;
-                foreach (Pigeon pigeon in Objects.List.OfType<Pigeon>())
+                if (photosTaken < maxPhotos)
                 {
-                    if (pigeon.flying)
-                        lastScore += 15;
-                    else
-                        lastScore += 10;
+                    lastScore = 0;
+                    foreach (Pigeon pigeon in Objects.List.OfType<Pigeon>())
+                    {
+                        if (pigeon.flying)
+                            lastScore += 15;
+                        else
+                            lastScore += 10;
+                    }
+                    if (lastScore > highScore)
+                        highScore = lastScore;
+                    graphicsHelper.flash.opacity = 1f; //I cry myself to sleep, please implement this differently 
+                    photos.Add(new Photo(graphicsHelper.lastFrame, lastScore));
+                    icons[photosTaken].taken = true;
+                    photosTaken++;
                 }
-                if (lastScore > highScore)
-                    highScore = lastScore;
             }
         }
         

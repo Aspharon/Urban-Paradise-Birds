@@ -36,3 +36,9 @@ H:\UU\3-1 - Minor Game Design\Kernmodule 2\Game 4\UrbanParadiseBirds\UrbanParadi
 H:\UU\3-1 - Minor Game Design\Kernmodule 2\Game 4\UrbanParadiseBirds\UrbanParadiseBirds\obj\Release\UrbanParadiseBirds.exe
 H:\UU\3-1 - Minor Game Design\Kernmodule 2\Game 4\UrbanParadiseBirds\UrbanParadiseBirds\obj\Release\UrbanParadiseBirds.pdb
 H:\UU\3-1 - Minor Game Design\Kernmodule 2\Game 4\UrbanParadiseBirds\UrbanParadiseBirds\obj\Release\UrbanParadiseBirds.csprojAssemblyReference.cache
+H:\UU\3-1 - Minor Game Design\Kernmodule 2\Game 4\UrbanParadiseBirds\UrbanParadiseBirds\bin\DesktopGL\AnyCPU\Release\Content\ambience.ogg
+H:\UU\3-1 - Minor Game Design\Kernmodule 2\Game 4\UrbanParadiseBirds\UrbanParadiseBirds\bin\DesktopGL\AnyCPU\Release\Content\ambience.xnb
+H:\UU\3-1 - Minor Game Design\Kernmodule 2\Game 4\UrbanParadiseBirds\UrbanParadiseBirds\bin\DesktopGL\AnyCPU\Release\Content\flap.xnb
+H:\UU\3-1 - Minor Game Design\Kernmodule 2\Game 4\UrbanParadiseBirds\UrbanParadiseBirds\bin\DesktopGL\AnyCPU\Release\Content\Flash.xnb
+H:\UU\3-1 - Minor Game Design\Kernmodule 2\Game 4\UrbanParadiseBirds\UrbanParadiseBirds\bin\DesktopGL\AnyCPU\Release\Content\photoBlank.xnb
+H:\UU\3-1 - Minor Game Design\Kernmodule 2\Game 4\UrbanParadiseBirds\UrbanParadiseBirds\bin\DesktopGL\AnyCPU\Release\Content\photoTaken.xnb

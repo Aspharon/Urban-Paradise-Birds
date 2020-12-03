@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 
 namespace UrbanParadiseBirds
 {
@@ -13,11 +14,14 @@ namespace UrbanParadiseBirds
         Texture2D[] northSprites, eastSprites, southSprites, westSprites, flyingSprites;
         Vector2 landingPos;
         LandingPosition landingPosition;
-        Vector2 flyDirection;
+        Vector2 flyDirection, velocity;
         bool landed = false;
         public bool flying = true;
         int flyingCounter, spritecounter;
         Texture2D currentSprite;
+        SpriteEffects spriteEffects;
+        int hopPos;
+        SoundEffect flap;
 
         public Pigeon(LandingPosition land)
         {
@@ -44,12 +48,16 @@ namespace UrbanParadiseBirds
             flyingSprites[2] = Game1.contentManager.Load<Texture2D>("F3");
             flyingSprites[3] = Game1.contentManager.Load<Texture2D>("F4");
 
+            flap = Game1.contentManager.Load<SoundEffect>("flap");
+
             landingPosition = land;
             landingPos = landingPosition.position;
             land.occupied = true;
             currentSprite = eastSprites[2];
 
             position = new Vector2(Game1.rand.Next(0, 250), -30);
+            if (position.X > landingPos.X) spriteEffects = SpriteEffects.FlipHorizontally;
+            else spriteEffects = SpriteEffects.None;
         }
 
         public override void Update(GameTime gameTime)
@@ -74,8 +82,18 @@ namespace UrbanParadiseBirds
             }
             else //landed
             {
-                if (Game1.rand.Next(600) == 1)
-                    FlyAway();
+                velocity.Y += 1; //gravity
+                if (velocity.X == 0) //not hopping
+                {
+                    if (Game1.rand.Next(90) == 1) { Hop(); return; }
+                    if (Game1.rand.Next(600) == 1)
+                    {
+                        FlyAway();
+                        return;
+                    }
+                }
+                position += velocity;
+                if (position.Y > landingPos.Y) { position.Y = landingPos.Y; velocity.X = 0; velocity.Y = 1; }
             }
         }
 
@@ -84,6 +102,9 @@ namespace UrbanParadiseBirds
             landingPos = new Vector2(Game1.rand.Next(0, 250), -100);
             landingPosition.occupied = false;
             flying = true;
+            if (position.X > landingPos.X) spriteEffects = SpriteEffects.FlipHorizontally;
+            else spriteEffects = SpriteEffects.None;
+            flap.Play();
         }
 
         void Fly()
@@ -112,15 +133,26 @@ namespace UrbanParadiseBirds
             }
             else //landed
             {
-                if (Game1.rand.NextDouble() > 0.5)
-                    currentSprite = eastSprites[1];
-                else currentSprite = westSprites[1];
+                currentSprite = eastSprites[1];
             }
+        }
+
+        void Hop()
+        {
+            velocity.X += 1;
+            velocity.Y -= 7;
+
+            if (hopPos == 2 || (hopPos != -2 && Game1.rand.NextDouble() > 0.5)) velocity.X *= -1;
+
+            hopPos += (int)velocity.X;
+
+            if (velocity.X < 0) spriteEffects = SpriteEffects.FlipHorizontally;
+            else spriteEffects = SpriteEffects.None;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(currentSprite, position);
+            spriteBatch.Draw(currentSprite, position, null, Color.White, 0, Vector2.Zero, 1, spriteEffects, 0);
         }
     }
 }

@@ -25,6 +25,9 @@ namespace UrbanParadiseBirds
         private int currentWindowHeight = windowHeight;
 
         Texture2D BG, FG;
+        public Texture2D lastFrame;
+        public Flash flash; //For anyone reading this: Don't do this. This is a very bodged approach to doing this, because I implemented the foreground/background badly. 
+                            //If you want to know how to properly do it: I think Draw() supports layers? I haven't looked much into it myself, but that would be how.
 
         public GraphicsHelper(Game host)
         {
@@ -43,6 +46,9 @@ namespace UrbanParadiseBirds
             FG = Game1.contentManager.Load<Texture2D>("FG");
 
             font = Game1.contentManager.Load<SpriteFont>("File");
+
+            flash = new Flash(); //again, don't. please.
+            Objects.List.Add(flash); //please.
         }
         
         public void HandleInput(InputHelper inputHelper)
@@ -68,11 +74,14 @@ namespace UrbanParadiseBirds
             foreach (GameObject obj in Objects.List)
                 obj.Draw(gameTime, spriteBatch);    //No idea if this is in the correct spot
             spriteBatch.Draw(FG, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-            spriteBatch.DrawString(font, "Last Photo Score: " + Game1.lastScore, Vector2.Zero, Color.White);
-            spriteBatch.DrawString(font, "High Score: " + Game1.highScore, new Vector2(0, 180), Color.White);
+            flash.DrawFlash(gameTime, spriteBatch); //I cry every time I see this. Please just don't
+            //spriteBatch.DrawString(font, "Last Photo Score: " + Game1.lastScore, Vector2.Zero, Color.White);
+            //spriteBatch.DrawString(font, "High Score: " + Game1.highScore, new Vector2(0, 180), Color.White);
             spriteBatch.End();
 
             graphics.GraphicsDevice.SetRenderTarget(null);
+
+            lastFrame = render;
 
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
             spriteBatch.Draw(render, destinationRectangle: new Rectangle(0, 0, currentWindowWidth, currentWindowHeight), color: Color.White);

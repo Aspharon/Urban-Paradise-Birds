@@ -42,12 +42,15 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Flash.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="GraphicsHelper.cs" />
     <Compile Include="InputHelper.cs" />
     <Compile Include="LandingPosition.cs" />
     <Compile Include="Objects.cs" />
+    <Compile Include="Photo.cs" />
+    <Compile Include="PhotoIcon.cs" />
     <Compile Include="Pigeon.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
