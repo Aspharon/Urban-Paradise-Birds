@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/partyhorn.ogg</SourceFile>
+  <SourceTime>2020-12-05T23:32:34+01:00</SourceTime>
+  <DestFile>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/bin/DesktopGL/partyhorn.xnb</DestFile>
+  <DestTime>2020-12-05T23:33:38+01:00</DestTime>
+  <Importer>OggImporter</Importer>
+  <ImporterTime>2017-03-01T16:05:36+01:00</ImporterTime>
+  <Processor>SoundEffectProcessor</Processor>
+  <ProcessorTime>2017-03-01T16:05:36+01:00</ProcessorTime>
+  <Parameters>
+    <Key>Quality</Key>
+    <Value>Best</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

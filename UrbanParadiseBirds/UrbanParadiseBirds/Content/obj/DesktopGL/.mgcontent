@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>DesktopGL</Platform>
+  <Config />
+  <SourceFiles>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/ambience.ogg</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/BG.png</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/E1.png</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/E2.png</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/E3.png</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/F1.png</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/F2.png</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/F3.png</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/F4.png</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/FG.png</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/flap.ogg</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/Flash.png</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/N1.png</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/N2.png</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/N3.png</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/photoBlank.png</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/photoTaken.png</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/S1.png</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/S2.png</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/S3.png</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/W1.png</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/W2.png</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/W3.png</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/frame.png</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/font.spritefont</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/endFrame.png</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/shutter.ogg</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/confetti.png</File>
+    <File>H:/UU/3-1 - Minor Game Design/Kernmodule 2/Game 4/UrbanParadiseBirds/UrbanParadiseBirds/Content/partyhorn.ogg</File>
+  </SourceFiles>
+</SourceFileCollection>

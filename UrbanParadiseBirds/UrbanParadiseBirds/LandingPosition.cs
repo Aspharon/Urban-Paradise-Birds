@@ -10,7 +10,6 @@ namespace UrbanParadiseBirds
 {
     class LandingPosition : GameObject
     {
-        public Vector2 position;
         public bool occupied = false;
 
         public LandingPosition(Vector2 land)

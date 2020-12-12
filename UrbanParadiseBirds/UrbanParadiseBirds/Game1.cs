@@ -3,8 +3,11 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System;
 
 namespace UrbanParadiseBirds
@@ -22,9 +25,12 @@ namespace UrbanParadiseBirds
         public static Random rand;
         public static int lastScore;
         public static int highScore;
-        public static List<Photo> photos;
+        List<Photo> photos;
+        PhotoDisplay display;
         Song ambience;
-        int maxPhotos = 5, photosTaken;
+        SoundEffect shutter, partyhorn;
+        
+        int maxPhotos = 5, photosTaken, timer, selectedPhoto = 0;
         
 
         public Game1()
@@ -60,6 +66,8 @@ namespace UrbanParadiseBirds
             SpawnPigeon();
 
             ambience = contentManager.Load<Song>("ambience");
+            shutter = contentManager.Load<SoundEffect>("shutter");
+            partyhorn = contentManager.Load<SoundEffect>("partyhorn");
             MediaPlayer.Play(ambience);
             MediaPlayer.IsRepeating = true;
 
@@ -87,7 +95,7 @@ namespace UrbanParadiseBirds
                 Objects.List.Add(pigeon);
             }
         }
-        
+
         protected override void Update(GameTime gameTime)
         {
             inputHelper.Update(gameTime);
@@ -96,12 +104,6 @@ namespace UrbanParadiseBirds
                 Exit();
 
             // TODO: Add your update logic here
-
-            if(rand.Next(600) == 1) //spawn pigeon
-            {
-                SpawnPigeon();
-            }
-
             base.Update(gameTime);
             graphicsHelper.Update(gameTime);
             graphicsHelper.HandleInput(inputHelper);
@@ -116,33 +118,105 @@ namespace UrbanParadiseBirds
                 Objects.List.Remove(obj);
             Objects.RemoveList.Clear();
 
-            List<Pigeon> removeList = new List<Pigeon>();
-            foreach (Pigeon pigeon in Objects.List.OfType<Pigeon>())
-                if (pigeon.position.Y < -40)
-                    removeList.Add(pigeon);
-            foreach (Pigeon p in removeList)
-            {
-                Objects.List.Remove(p);
-            }
-
-            if (inputHelper.KeyPressed(Keys.Space))
-            {
-                if (photosTaken < maxPhotos)
+            switch (graphicsHelper.gamestate) {
+                case 0:
                 {
-                    lastScore = 0;
-                    foreach (Pigeon pigeon in Objects.List.OfType<Pigeon>())
+                    if (rand.Next(600) == 1) //spawn pigeon
                     {
-                        if (pigeon.flying)
-                            lastScore += 15;
-                        else
-                            lastScore += 10;
+                        SpawnPigeon();
                     }
-                    if (lastScore > highScore)
-                        highScore = lastScore;
-                    graphicsHelper.flash.opacity = 1f; //I cry myself to sleep, please implement this differently 
-                    photos.Add(new Photo(graphicsHelper.lastFrame, lastScore));
-                    icons[photosTaken].taken = true;
-                    photosTaken++;
+                    if (timer > 0)
+                    {
+                        timer++;
+                        MediaPlayer.Volume -= 0.01f;
+                        if (MediaPlayer.Volume < 0) { MediaPlayer.Volume = 0; MediaPlayer.Stop(); }
+                    }
+                    if (timer > 120)
+                    {
+
+                        graphicsHelper.gamestate = 1;
+                        Objects.List.Clear();
+
+                        display = new PhotoDisplay();
+                        display.photo = photos[0];
+                        Objects.List.Add(display);
+
+                        UIObject frame = new UIObject();
+                        frame.sprite = contentManager.Load<Texture2D>("frame");
+                        Objects.List.Add(frame);
+                    }
+
+
+                    List<Pigeon> removeList = new List<Pigeon>();
+                    foreach (Pigeon pigeon in Objects.List.OfType<Pigeon>())
+                        if (pigeon.position.Y < -40)
+                            removeList.Add(pigeon);
+                    foreach (Pigeon p in removeList)
+                    {
+                        Objects.List.Remove(p);
+                    }
+
+                    if (inputHelper.KeyPressed(Keys.Space))
+                    {
+                        if (photosTaken < maxPhotos)
+                        {
+                            shutter.Play();
+                            lastScore = 0;
+                            foreach (Pigeon pigeon in Objects.List.OfType<Pigeon>())
+                            {
+                                if (pigeon.flying)
+                                    lastScore += 15;
+                                else
+                                    lastScore += 10;
+                            }
+                            if (lastScore > highScore)
+                                highScore = lastScore;
+                            graphicsHelper.flash.opacity = 1f; //I cry myself to sleep, please implement this differently 
+                            photos.Add(new Photo(graphicsHelper.Photo(gameTime), lastScore));
+                            icons[photosTaken].taken = true;
+                            photosTaken++;
+                            if (photosTaken == maxPhotos) timer = 1;
+                        }
+                    }
+                    break;
+                }
+                case 1:
+                {
+                    if (inputHelper.KeyPressed(Keys.Right))
+                        {
+                            selectedPhoto++;
+                            if (selectedPhoto >= maxPhotos) selectedPhoto = 0;
+                            display.photo = photos[selectedPhoto];
+                        }
+                    if (inputHelper.KeyPressed(Keys.Left))
+                        {
+                            selectedPhoto--;
+                            if (selectedPhoto < 0) selectedPhoto = maxPhotos - 1;
+                            display.photo = photos[selectedPhoto];
+                        }
+                        if (inputHelper.KeyPressed(Keys.Space))
+                        {
+                            graphicsHelper.gamestate++;
+                            highScore = photos[selectedPhoto].points;
+                            Objects.List.Clear();
+
+                            display = new PhotoDisplay();
+                            display.photo = photos[selectedPhoto];
+                            Objects.List.Add(display);
+
+                            partyhorn.Play();
+
+                            for (int z = 0; z < 30; z++)
+                            {
+                                Confetti confetti = new Confetti();
+                                Objects.List.Add(confetti);
+                            }
+
+                            UIObject frame = new UIObject();
+                            frame.sprite = contentManager.Load<Texture2D>("endFrame");
+                            Objects.List.Add(frame);
+                        }
+                        break;
                 }
             }
         }

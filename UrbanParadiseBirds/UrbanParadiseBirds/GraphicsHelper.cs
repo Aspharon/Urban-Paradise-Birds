@@ -9,10 +9,11 @@ namespace UrbanParadiseBirds
 {
     class GraphicsHelper
     {
-        RenderTarget2D render;
+        public RenderTarget2D render;
         public GraphicsDeviceManager graphics;
         public SpriteBatch spriteBatch;
-        private SpriteFont font;
+
+        SpriteFont font;
 
         public static readonly int zoom = 4;
         public static readonly int renderWidth = 250;
@@ -25,7 +26,7 @@ namespace UrbanParadiseBirds
         private int currentWindowHeight = windowHeight;
 
         Texture2D BG, FG;
-        public Texture2D lastFrame;
+        public int gamestate = 0; //this is bad as well
         public Flash flash; //For anyone reading this: Don't do this. This is a very bodged approach to doing this, because I implemented the foreground/background badly. 
                             //If you want to know how to properly do it: I think Draw() supports layers? I haven't looked much into it myself, but that would be how.
 
@@ -39,13 +40,13 @@ namespace UrbanParadiseBirds
 
             PresentationParameters pp = graphics.GraphicsDevice.PresentationParameters;
             render = new RenderTarget2D(graphics.GraphicsDevice, renderWidth, renderHeight, false, SurfaceFormat.Color, DepthFormat.None, pp.MultiSampleCount, RenderTargetUsage.DiscardContents);
-
+            
             spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
 
             BG = Game1.contentManager.Load<Texture2D>("BG");
             FG = Game1.contentManager.Load<Texture2D>("FG");
 
-            font = Game1.contentManager.Load<SpriteFont>("File");
+            font = Game1.contentManager.Load<SpriteFont>("font");
 
             flash = new Flash(); //again, don't. please.
             Objects.List.Add(flash); //please.
@@ -73,7 +74,8 @@ namespace UrbanParadiseBirds
             spriteBatch.Draw(BG, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             foreach (GameObject obj in Objects.List)
                 obj.Draw(gameTime, spriteBatch);    //No idea if this is in the correct spot
-            spriteBatch.Draw(FG, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            if (gamestate == 0)
+                spriteBatch.Draw(FG, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             flash.DrawFlash(gameTime, spriteBatch); //I cry every time I see this. Please just don't
             //spriteBatch.DrawString(font, "Last Photo Score: " + Game1.lastScore, Vector2.Zero, Color.White);
             //spriteBatch.DrawString(font, "High Score: " + Game1.highScore, new Vector2(0, 180), Color.White);
@@ -81,12 +83,39 @@ namespace UrbanParadiseBirds
 
             graphics.GraphicsDevice.SetRenderTarget(null);
 
-            lastFrame = render;
+            spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            spriteBatch.Draw(render, destinationRectangle: new Rectangle(0, 0, currentWindowWidth, currentWindowHeight), color: Color.White);
+            if (gamestate == 2)
+            {
+                spriteBatch.DrawString(font, "Score: " + Game1.highScore, new Vector2(5, 181) * zoom, new Color(181, 137, 04));
+                spriteBatch.DrawString(font, "Score: " + Game1.highScore, new Vector2(5, 180) * zoom, Color.White);
+            }
+            spriteBatch.End();
+
+        }
+
+        public Texture2D Photo(GameTime gameTime)
+        {
+            graphics.GraphicsDevice.SetRenderTarget(render);
+            graphics.GraphicsDevice.Clear(Color.Transparent);
+            graphics.GraphicsDevice.BlendState = BlendState.AlphaBlend;
+            graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
+            graphics.GraphicsDevice.RasterizerState = RasterizerState.CullNone;
+
+            spriteBatch.Begin(0, null, SamplerState.PointClamp);
+            spriteBatch.Draw(BG, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            foreach (GameObject obj in Objects.List)
+                obj.Draw(gameTime, spriteBatch);    //No idea if this is in the correct spot
+            spriteBatch.Draw(FG, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            spriteBatch.End();
+
+            RenderTarget2D lastFrame = new RenderTarget2D(graphics.GraphicsDevice, windowWidth, windowHeight, false, SurfaceFormat.Color, DepthFormat.None, graphics.GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.DiscardContents);
+            graphics.GraphicsDevice.SetRenderTarget(lastFrame);
 
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
             spriteBatch.Draw(render, destinationRectangle: new Rectangle(0, 0, currentWindowWidth, currentWindowHeight), color: Color.White);
             spriteBatch.End();
-
+            return lastFrame;
         }
     }
 }
